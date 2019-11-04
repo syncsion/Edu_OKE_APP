@@ -1,0 +1,67 @@
+apiVersion: apps/v1                   #extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jpetstore-deployment
+  labels:
+    app: jpetstore-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       app: jpetstore-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: jpetstore-app
+    spec:
+      containers:
+      - image: icn.ocir.io/synergy21/jpetstore-prd:p01
+        #imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
+        name: jpetstore-app-container
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        #resources:
+        #  requests:
+        #    cpu: 50m
+        #    memory: 64Mi
+        #  limits:
+        #    cpu: 70m
+        #    memory: 256Mi
+        volumeMounts:
+          - mountPath: /tomcat/logs
+            name: jpetstore-volume
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: ocirsecret
+      nodeSelector:
+        name: pool-prd
+      volumes:
+        - name: jpetstore-volume
+          hostPath:
+            path: /logs/jpetstore/logs
+            type: Directory
+
+---
+
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: jpetstore-svc
+#spec:
+  #type: NodePort
+#  type: LoadBalancer
+#  selector:
+#    app: jpetstore-app
+#  ports:
+#    - name: http
+#      port: 80
+#      targetPort: 8080
+#      protocol: TCP
+      #nodePort: 30080
