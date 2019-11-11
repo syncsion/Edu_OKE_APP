@@ -66,6 +66,10 @@ deploy-to-oke:
         name: "Visualise Kubernetes config"
         code: cat kubernetes-deployment.yml
 
+    - script:
+        name: "Key_val"
+        code: echo $DOCKER_USERNAME
+
 
     - kubectl:
         name: delete deplyoment
