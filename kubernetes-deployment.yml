@@ -20,7 +20,7 @@ spec:
         app: jpetstore-app
     spec:
       containers:
-      - image: bokim/oke-jpetstore:master-0.1
+      - image: docker.io/bokim/oke-jpetstore:master-0.1
         #imagePullPolicy: IfNotPresent
         imagePullPolicy: Always
         name: jpetstore-app-container
