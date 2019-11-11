@@ -60,7 +60,7 @@ deploy-to-oke:
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: create secret docker-registry wercker  --docker-email=bokim@uclick.co.kr --docker-username=$DOCKER_USERNAME --docker-password='$DOCKER_PASSWORD'; echo create registry secret
-	    #command는 OCIR을 사용하기 위해 생성한 secret 정보
+
 		
     - script:
         name: "Visualise Kubernetes config"
