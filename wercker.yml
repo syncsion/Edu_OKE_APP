@@ -38,3 +38,45 @@ push-to-releases:
         working-dir: /pipeline/source/apache-tomcat-7.0.94/
         ports: "8080"
         cmd: bin/catalina.sh run
+
+deploy-to-oke:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - bash-template
+
+    - kubectl:
+        name: delete secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete secret wercker; echo delete registry secret
+
+
+    - kubectl:
+        name: create secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wercker  --docker-email=bokim@uclick.co.kr --docker-username=$DOCKER_USERNAME --docker-password='$DOCKER_PASSWORD'; echo create registry secret
+	    #command는 OCIR을 사용하기 위해 생성한 secret 정보
+		
+    - script:
+        name: "Visualise Kubernetes config"
+        code: cat kubernetes-deployment.yml
+
+
+    - kubectl:
+        name: delete deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE --ignore-not-found=true
+
+    - kubectl:
+        name: create deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE
