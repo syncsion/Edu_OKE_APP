@@ -5,7 +5,7 @@ metadata:
   labels:
     app: jpetstore-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
        app: jpetstore-app
@@ -21,17 +21,12 @@ spec:
     spec:
       containers:
       - image: docker.io/bokim/oke-jpetstore:master-0.1
-        #imagePullPolicy: IfNotPresent
         imagePullPolicy: Always
         name: jpetstore-app-container
         ports:
         - containerPort: 8080
           protocol: TCP
-
       restartPolicy: Always
-#      imagePullSecrets:
-#        - name: wercker
-      
 
 ---
 
@@ -40,7 +35,6 @@ spec:
 #metadata:
 #  name: jpetstore-svc
 #spec:
-  #type: NodePort
 #  type: LoadBalancer
 #  selector:
 #    app: jpetstore-app
@@ -49,4 +43,5 @@ spec:
 #      port: 80
 #      targetPort: 8080
 #      protocol: TCP
-      #nodePort: 30080
+#      nodePort: 30080
+
