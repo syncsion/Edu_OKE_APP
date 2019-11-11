@@ -61,7 +61,7 @@ deploy-to-oke:
         insecure-skip-tls-verify: true
         command: create secret docker-registry wercker  --docker-email=bokim@uclick.co.kr --docker-username=$DOCKER_USERNAME --docker-password='$DOCKER_PASSWORD'; echo create registry secret
 
-		
+
     - script:
         name: "Visualise Kubernetes config"
         code: cat kubernetes-deployment.yml
