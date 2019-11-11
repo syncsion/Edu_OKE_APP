@@ -56,13 +56,12 @@ deploy-to-oke:
     - script:
         name: "Key_val2"
         code: echo $KUBERNETES_TOKEN
-
               
     - script:
         name: "cat yml"
         code: cat $WERCKER_ROOT/kubernetes-deployment.yml
 
-- kubectl:
+    - kubectl: 
         name: delete deplyoment
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
