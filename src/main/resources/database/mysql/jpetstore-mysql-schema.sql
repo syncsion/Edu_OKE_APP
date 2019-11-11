@@ -1,6 +1,18 @@
-#CREATE DATABASE jpetstore;
+# database 생성 	
+create database jpetstore;
 
-USE jpetstore;
+# databse 변경
+use jpetstore;
+
+# user 생성
+create user 'jpetstore'@'%' identified by 'Welcome1@';
+
+# 권한 생성
+grant all privileges on jpetstore.* to 'jpetstore'@'%';
+
+# 새로고침
+flush privileges;
+
 
 CREATE TABLE IF NOT EXISTS SUPPLIER (
    SUPPID INT NOT NULL, 
