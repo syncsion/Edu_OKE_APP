@@ -21,7 +21,8 @@ build:
             wget http://mirror.navercorp.com/apache/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz
             tar -zxf apache-tomcat-7.0.96.tar.gz
             cd apache-tomcat-7.0.96
-            cp /pipeline/source/target/jpetstore.war webapps/jpetstore.war
+            rm -rf webapps/ROOT
+            cp /pipeline/source/target/jpetstore.war webapps/ROOT.war
 
     - script:
         name: check
