@@ -27,26 +27,11 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-        #resources:
-        #  requests:
-        #    cpu: 50m
-        #    memory: 64Mi
-        #  limits:
-        #    cpu: 70m
-        #    memory: 256Mi
-        volumeMounts:
-          - mountPath: /tomcat/logs
-            name: jpetstore-volume
+
       restartPolicy: Always
       imagePullSecrets:
-        - name: ocirsecret
-      nodeSelector:
-        name: pool-prd
-      volumes:
-        - name: jpetstore-volume
-          hostPath:
-            path: /logs/jpetstore/logs
-            type: Directory
+        - name: wercker
+      
 
 ---
 
