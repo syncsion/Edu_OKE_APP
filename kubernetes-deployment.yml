@@ -29,8 +29,8 @@ spec:
           protocol: TCP
 
       restartPolicy: Always
-      imagePullSecrets:
-        - name: wercker
+#      imagePullSecrets:
+#        - name: wercker
       
 
 ---
