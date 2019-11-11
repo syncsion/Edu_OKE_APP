@@ -56,6 +56,10 @@ deploy-to-oke:
     - script:
         name: "Key_val2"
         code: echo $KUBERNETES_TOKEN
+
+- script:
+        name: "Key_val3"
+        code: echo $KUBERNETES_MASTER
               
     - script:
         name: "cat yml"
