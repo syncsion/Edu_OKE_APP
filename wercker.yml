@@ -3,22 +3,17 @@ box:
   id: openjdk:8-alpine
 
 
-
 build:
   steps:
-    # Maven 설치
     - script:
         name: install maven
         code: |
             apk add maven
             mvn -v
-        
 
     - script:
         name: maven build
         code: mvn clean package
-         
-        
 
     - script:
         name: install tomcat 7
@@ -27,8 +22,6 @@ build:
             tar -zxf apache-tomcat-7.0.96.tar.gz
             cd apache-tomcat-7.0.96
             cp /pipeline/source/target/jpetstore.war webapps/jpetstore.war
-
-
 
     - script:
         name: check
