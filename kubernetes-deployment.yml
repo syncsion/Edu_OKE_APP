@@ -20,7 +20,7 @@ spec:
         app: jpetstore-app
     spec:
       containers:
-      - image: icn.ocir.io/synergy21/jpetstore-prd:p01
+      - image: bokim/oke-jpetstore:master-0.1
         #imagePullPolicy: IfNotPresent
         imagePullPolicy: Always
         name: jpetstore-app-container
