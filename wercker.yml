@@ -69,6 +69,8 @@ deploy-to-oke:
     - script:
         name: "Key_val"
         code: echo $DOCKER_USERNAME
+              echo $APP_NAMESPACE
+              echo $WERCKER_ROOT
 
 
     - kubectl:
