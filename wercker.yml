@@ -1,0 +1,94 @@
+# Docker Hub에서 Docker Base Image Pull
+box:
+  id: openjdk:8-alpine
+
+
+# 빌드 
+build:
+  steps:
+    # Maven 설치
+    - script:
+        name: install maven
+        code: |
+            apk add maven
+            mvn -v
+        
+    # App Maven Build    
+    - script:
+        name: maven build
+        code: mvn clean package
+         
+        
+    # Tomcat 설치 및 App war webapps에 배포        
+    - script:
+        name: install tomcat 7
+        code: |
+            wget http://mirror.navercorp.com/apache/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz
+            tar -zxf apache-tomcat-7.0.96.tar.gz
+            cd apache-tomcat-7.0.96
+            cp /pipeline/source/target/jpetstore.war webapps/jpetstore.war
+
+
+    # 생성 확인      
+    - script:
+        name: check
+        code: |
+            ls -l /pipeline/source/
+
+
+# OCIR Iamge Push
+push-to-releases:
+  steps:
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $OCI_AUTH_TOKEN
+        repository: $DOCKER_REPO
+        registry: https://$DOCKER_REGISTRY/v2
+        tag: master-0.1
+        working-dir: /pipeline/source/apache-tomcat-7.0.94/
+        ports: "8080"
+        cmd: bin/catalina.sh run
+
+# Kube 배포
+deploy-to-oke:
+  box:
+        id: alpine
+        cmd: /bin/sh
+  steps:
+    - bash-template
+
+    - kubectl:
+        name: delete secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete secret wercker; echo delete registry secret
+
+    # OCIR 접속 
+    - kubectl:
+        name: create secret
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create secret docker-registry wercker --docker-server=phx.ocir.io --docker-email=bokim@uclick.co.kr --docker-username=$DOCKER_USERNAME --docker-password='$OCI_AUTH_TOKEN'; echo create registry secret
+	    #command는 OCIR을 사용하기 위해 생성한 secret 정보
+		
+    - script:
+        name: "Visualise Kubernetes config"
+        code: cat kubernetes-deployment.yml
+
+    # Pod 삭제
+    - kubectl:
+        name: delete deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE --ignore-not-found=true
+
+    # Pod 생성
+    - kubectl:
+        name: create deplyoment
+        server: $KUBERNETES_MASTER
+        token: $KUBERNETES_TOKEN
+        insecure-skip-tls-verify: true
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE
