@@ -70,7 +70,7 @@ deploy-to-oke:
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --ignore-not-found=true
+        command: delete -f kubernetes-deployment.yml --ignore-not-found=true
 
     - kubectl:
         name: delete1 deplyoment
