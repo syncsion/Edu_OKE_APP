@@ -27,3 +27,13 @@ build:
         name: check
         code: |
             ls -l /pipeline/source/
+
+push-to-releases:
+  steps:
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        tag: master-0.1
+        working-dir: /pipeline/source/apache-tomcat-7.0.94/
+        ports: "8080"
+        cmd: bin/catalina.sh run
