@@ -68,11 +68,16 @@ deploy-to-oke:
 
     - script:
         name: "Key_val"
-        code: echo $DOCKER_USERNAME
-              echo $APP_NAMESPACE
               echo $WERCKER_ROOT
-
-
+    - script:
+        name: "Key_val2"
+              echo $APP_NAMESPACE
+              cat $WERCKER_ROOT/kubernetes-deployment.yml
+              
+    - script:
+        name: "cat yml"
+              cat $WERCKER_ROOT/kubernetes-deployment.yml
+  
     - kubectl:
         name: delete deplyoment
         server: $KUBERNETES_MASTER
