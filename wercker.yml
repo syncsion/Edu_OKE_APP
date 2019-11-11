@@ -50,31 +50,16 @@ deploy-to-oke:
         name: "Visualise Kubernetes config"
         code: cat kubernetes-deployment.yml
 
-    - script:
-        name: "Key_val"
-        code:  echo $WERCKER_ROOT
-    - script:
-        name: "Key_val2"
-        code: echo $KUBERNETES_TOKEN
-
-    - script:
-        name: "Key_val3"
-        code: echo $KUBERNETES_MASTER
-              
-    - script:
-        name: "cat yml"
-        code: cat $WERCKER_ROOT/kubernetes-deployment.yml
-
     - kubectl:
         name: deletel deplyoment
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE --ignore-not-found=true
+        command: delete -f $WERCKER_ROOT/kubernetes-deployment.yml 
 
     - kubectl:
         name: create deplyoment
         server: $KUBERNETES_MASTER
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
-        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE
+        command: create -f $WERCKER_ROOT/kubernetes-deployment.yml 
