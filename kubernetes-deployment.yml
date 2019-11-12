@@ -20,12 +20,28 @@ spec:
         app: jpetstore-app
     spec:
       containers:
-      - image: docker.io/bokim/oke-jpetstore:master-0.1
+      - image: docker.io/bokim/oke-jpetstore:v01
         imagePullPolicy: Always
         name: jpetstore-app-container
         ports:
         - containerPort: 8080
           protocol: TCP
+      - image: docker.io/bokim/oke-mysql:v01
+        imagePullPolicy: Always
+        name: mysql-db-container
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Welcome1@
+        #resources:
+        #  requests:
+        #    cpu: 250m
+        #    memory: 64Mi
+        #  limits:
+        #    cpu: 500m
+        #    memory: 256Mi   
       restartPolicy: Always
 
 ---

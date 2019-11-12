@@ -35,7 +35,7 @@ push-to-releases:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
         repository: bokim/oke-jpetstore
-        tag: master-0.1
+        tag: v01
         working-dir: /pipeline/source/apache-tomcat-7.0.96/
         ports: "8080"
         cmd: bin/catalina.sh run
