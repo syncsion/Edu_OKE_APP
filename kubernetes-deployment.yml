@@ -20,13 +20,13 @@ spec:
         app: jpetstore-app
     spec:
       containers:
-      - image: docker.io/bokim/oke-jpetstore:v01
+      - image: docker.io/$REPO_NAME/oke-jpetstore:v01
         imagePullPolicy: Always
         name: jpetstore-app-container
         ports:
         - containerPort: 8080
           protocol: TCP
-      - image: docker.io/bokim/oke-mysql:v01
+      - image: docker.io/$REPO_NAME/oke-mysql:v01
         imagePullPolicy: Always
         name: mysql-db-container
         ports:
