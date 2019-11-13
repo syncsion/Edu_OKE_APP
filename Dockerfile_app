@@ -2,19 +2,22 @@ FROM openjdk:8-alpine
 
 WORKDIR /jpetstore
 
+ARG TOMCAT_SERVER=apache-tomcat-7.0.96
+ARG TOMCAT_HOME=/jpetstore/${TOMCAT_SERVER}
+ARG TOMCAT_DOWNLOAD_URL=http://mirror.navercorp.com/apache/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz
+
 ADD src src
 ADD pom.xml .
 
-RUN	apk add maven | mvn -v
+RUN apk add maven
+RUN mvn -v
 RUN mvn clean package
 
-RUN wget http://mirror.navercorp.com/apache/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz
+RUN wget ${TOMCAT_DOWNLOAD_URL}
 RUN tar -zxf apache-tomcat-7.0.96.tar.gz
-RUN cd apache-tomcat-7.0.96
-RUN rm -rf webapps/ROOT
-RUN cp /jpetstore/target/jpetstore.war webapps/ROOT.war
-            
+RUN cd ${TOMCAT_HOME}
+RUN rm -rf ${TOMCAT_HOME}/webapps/ROOT
+RUN cp /jpetstore/target/jpetstore.war ${TOMCAT_HOME}/webapps/ROOT.war
+
 EXPOSE 8080
 CMD ["/jpetstore/apache-tomcat-7.0.96/bin/catalina.sh", "run"]
-
-
