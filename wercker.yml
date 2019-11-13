@@ -34,7 +34,7 @@ push-to-releases:
     - internal/docker-push:
         username: $DOCKER_USERNAME
         password: $DOCKER_PASSWORD
-        repository: bokim/oke-jpetstore
+        repository: $REPO_NAME/oke-jpetstore
         tag: v01
         working-dir: /pipeline/source/apache-tomcat-7.0.96/
         ports: "8080"
